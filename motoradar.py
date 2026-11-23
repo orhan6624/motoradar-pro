@@ -7,7 +7,7 @@ import urllib.parse
 import xml.etree.ElementTree as ET
 
 TOKEN = os.environ.get("BOT_TOKEN", "")
-KANAL = "MotoRadar" 
+KANAL = @motoradarfirsat 
 AMAZON_TAG = ""  # İleride Amazon ortaklık kodun gelince buraya yazacaksın
 
 HAFIZA_DOSYASI = "fiyat_hafizasi.json"
