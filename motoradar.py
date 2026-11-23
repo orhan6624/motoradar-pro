@@ -1,4 +1,5 @@
 import os
+import time
 import json
 import urllib.request
 import urllib.parse
@@ -25,7 +26,14 @@ def gonder(mesaj):
         "parse_mode": "HTML"
     }).encode()
     req = urllib.request.Request(url, data=data)
-    urllib.request.urlopen(req, timeout=10)
+    try:
+        urllib.request.urlopen(req, timeout=10)
+    except Exception:
+        time.sleep(5)
+        try:
+            urllib.request.urlopen(req, timeout=10)
+        except Exception:
+            pass
 
 def main():
     if os.path.exists(HAFIZA_DOSYASI):
@@ -49,14 +57,16 @@ def main():
                 link = item.find("link").text
                 if link not in hafiza:
                     hafiza.add(link)
+                    etiket = kelime.split()[0].upper()
                     mesaj = (
                         f"🏍️ <b>MOTO FIRSAT & KAMPANYA RADARI</b>\n\n"
                         f"📦 <b>{baslik}</b>\n"
-                        f"🏷️ Etiket: #{kelime.split()[0].upper()}\n\n"
+                        f"🏷️ Etiket: #{etiket}\n\n"
                         f"👉 <a href='{link}'>Kampanyayı ve Fiyatları Gör</a>"
                     )
                     gonder(mesaj)
                     gonderilen += 1
+                    time.sleep(2.5)
         except Exception as e:
             print(f"Hata ({kelime}): {e}")
 
