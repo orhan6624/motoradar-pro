@@ -1,0 +1,28 @@
+name: MotoRadar Pro Tarama
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  tara:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Siteleri Tara
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: python motoradar.py
+      - name: Hafizayi Kaydet
+        run: |
+          git config user.name "MotoRadar Bot"
+          git config user.email "bot@github.com"
+          git add -A
+          git diff --quiet && git diff --staged --quiet || (git commit -m "fiyat hafizasi guncellendi" && git push)
